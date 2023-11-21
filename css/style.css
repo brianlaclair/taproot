@@ -17,7 +17,7 @@ body {
 }
 
 .profileImage{
-    margin-bottom: 0px;
+    margin-bottom: 20px;
     width: 20vw;
     height: 20vw;
     max-width: 200px;
@@ -92,8 +92,9 @@ body {
 
 .linkImage {
     overflow: hidden;
-    max-width: 80px;
-    max-height: 80px;
+    max-width: 60px;
+    border-radius: 10px;
+    padding: 5px;
 }
 
 .linkOut {

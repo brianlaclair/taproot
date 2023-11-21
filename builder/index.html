@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>taproot builder</title>
+        <script>var autoload = false;</script>
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <link rel="stylesheet" type="text/css" href="../css/custom.css">
+        <link rel="stylesheet" type="text/css" href="builder-style.css">
+        <script src="../build.js"></script>
+        <link rel="icon" href="media/favicon.ico" type="image/x-icon">
+        <meta name="description" content="taproot is a simple, open-source, customizable link page">
+        <script>
+            fetch('../config.json')
+                .then((response) => response.json())
+                .then((json) => {
+                    config = json;
+                    init(config);
+                    fillEditor(config);
+                });
+        </script>
+        
+    </head>
+    <body>
+        <div id="editor">
+            <details>
+                <summary>Title, Image, and Description</summary>
+                <div class="horizontal">
+                    <input type="text" id="edTitle" name="title" placeholder="Title">
+                    <!-- checkbox for title on page -->
+                    <input type="checkbox" id="edTitleOnPage" name="titleOnPage" value="titleOnPage">
+                </div>
+                <div class="horizontal">
+                    <input type="text" id="edDescription" name="description" placeholder="Description">
+                </div>
+            </details>
+            <details>
+                <summary>Colors</summary>
+                <div class="horizontal">
+                    <input type="color" id="edColorPrimary" name="color1" value="#000000">
+                    <input type="color" id="edColorSecondary" name="color2" value="#000000">
+                    <input type="color" id="edColorTertiary" name="color3" value="#000000">
+                    <input type="color" id="edColorQuaternary" name="color4" value="#000000">
+                    <input type="color" id="edColorQuinary" name="color4" value="#000000">
+                </div>
+            </details>
+        </div>
+        <div id="preview">
+            <div id="profileHead" class="standardVertical">
+                <div id="profilePic">
+                    <img id="profilePicture" class="profileImage"></img>
+                </div>
+                <div id="profileName">
+                </div>
+                <div id="profileDescription">
+                </div>
+            </div>
+            <div id="linkList" class="standardVertical">
+            </div>
+            <div id="socialLinks">
+            
+            </div>
+            <div class="backgroundImageHolder">
+                <img id="background" class="backgroundImage" src=""></img>
+            </div>
+        </div>
+        <script src="builder.js"></script>
+    </body>
+</html>
