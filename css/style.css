@@ -81,6 +81,7 @@ body {
     opacity: 1;
     box-shadow: 0px 0px 10px 0px var(--main-link-hover-color);
     background-color: var(--main-link-hover-color);
+    transform: scale(1.1);
 }
 
 .linkText {
@@ -106,27 +107,25 @@ body {
     justify-content: center;
     align-items: center;
     width: 100vw;
-    max-width: 890px;
     margin: 10px 0px 10px 0px;
-
 }
 
 .socialImage {
-    width: 20px;
-    height: 20px;
+    width: 5vw;
+    max-width: 50px;
 }
 
 .socialLink {
-    background: var(--main-text-color);
     padding: 10px;
     margin: 0px 10px 0px 10px;
     border-radius: 10px;
-    filter: grayscale(100%);
+    filter: grayscale(100%) brightness(0.5) contrast(500%) drop-shadow(0px 0px 1px var(--main-text-color));
     transition-duration: 0.1s;
     transition-timing-function: ease-in;
 }
 
 .socialLink:hover {
+    background: var(--main-text-color);
     filter: grayscale(0%);
-    transform: scale3d(1.1, 1.1, 1.1);
+    transform: scale(1.5);
 }
