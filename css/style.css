@@ -1,0 +1,88 @@
+body {
+    background-color: #000000;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #212529;
+    text-align: left;
+    padding: 0;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+#profileHead {
+    width: 100%;
+}
+
+.profileImage{
+    margin-bottom: 0px;
+    width: 20vw;
+    height: 20vw;
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.backgroundImage{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: -1;
+}
+
+#profileName{
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.standardVertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.link {
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-decoration: none;
+    width: 100vw;
+    max-width: 890px;
+    min-height: 70px;
+    color: #212529;
+    background-color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+}
+
+.link:hover {
+    max-width: 900px;
+    min-height: 80px;
+}
+
+.linkText {
+    width: 100%;
+    display:flex;
+    justify-content: center;
+}
+
+.linkImage {
+    overflow: hidden;
+    max-width: 80px;
+    max-height: 80px;
+}
+
+.linkOut {
+    display:block;
+    text-decoration: none;
+    margin: 10px;
+}
