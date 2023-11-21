@@ -17,6 +17,9 @@ function init(json) {
     // Clear socials from previous init
     document.getElementById("socialLinks").innerHTML = "";
 
+    // Clear background image from previous init
+    document.getElementById("background").src = "";
+
     // Set the page title
     document.title = json.title;
 

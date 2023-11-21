@@ -11,10 +11,19 @@ input {
     outline: none;
     font-size: 15px;
     padding: 10px;
+    border-radius: 5px;
 }
 
 details {
     width: 100%;
+}
+
+.backgroundImageHolder {
+    top: 0;
+}
+
+.backgroundImage {
+    position: relative;
 }
 
 summary {
@@ -22,6 +31,14 @@ summary {
     cursor: pointer;
     font-size: 20px;
     font-weight: bold;
+}
+
+.edLink {
+    width: 90%;
+    background-color: #999999;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
 }
 
 input[type=checkbox] {
@@ -47,6 +64,23 @@ input[type=checkbox] {
     width: 30%;
     height: 100%;
     color: #000000;
+    overflow-y: scroll;
+}
+
+.wide {
+    width: 90%;
+    height: 50px;
+    background-color: #999999;
+    border-radius: 5px;
+    border: none;
+    margin: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.wide:hover {
+    background-color: #cccccc;
 }
 
 #preview {
@@ -57,4 +91,8 @@ input[type=checkbox] {
 
 #socialLinks {
     width: 100%;
+}
+
+.red {
+    background-color: #ad0000;
 }

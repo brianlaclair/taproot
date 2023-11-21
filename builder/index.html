@@ -24,8 +24,12 @@
             <details>
                 <summary>Title, Image, and Description</summary>
                 <div class="horizontal">
+                    <!-- img input -->
+                    <input type="file" id="edImage" name="image" accept="image/*">
+                    <input type="checkbox" id="edBackgroundImage" name="backgroundImage" value="backgroundImage">
+                </div>
+                <div class="horizontal">
                     <input type="text" id="edTitle" name="title" placeholder="Title">
-                    <!-- checkbox for title on page -->
                     <input type="checkbox" id="edTitleOnPage" name="titleOnPage" value="titleOnPage">
                 </div>
                 <div class="horizontal">
@@ -42,6 +46,26 @@
                     <input type="color" id="edColorQuinary" name="color4" value="#000000">
                 </div>
             </details>
+            <details>
+                <summary>Socials</summary>
+                <div>
+                    <input type="text" id="edFacebook" name="facebook" placeholder="facebook URL">
+                    <input type="text" id="edTwitter" name="twitter" placeholder="twitter URL">
+                    <input type="text" id="edInstagram" name="instagram" placeholder="instagram URL">
+                    <input type="text" id="edTiktok" name="tiktok" placeholder="tiktok URL">
+                    <input type="text" id="edYoutube" name="youtube" placeholder="youtube URL">
+                    <input type="text" id="edTwitch" name="twitch" placeholder="twitch URL">
+                    <input type="text" id="edGithub" name="github" placeholder="github URL">
+                    <input type="text" id="edLinkedIn" name="linkedin" placeholder="linkedin URL">
+                </div>
+            </details>
+            <div id="edLinks">
+                <div id="edLinkHolder">
+                </div>
+            </div>
+            <div id="addLink">
+                <button id="addLinkButton" class="wide">Add Link</button>
+            </div>
         </div>
         <div id="preview">
             <div id="profileHead" class="standardVertical">
