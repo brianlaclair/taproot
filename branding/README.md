@@ -1,4 +1,4 @@
-All logos in this directory belong to their respective copyright holders, including:
+The rights of all logos in this directory belong to their respective copyright holders, including:
 
 - Meta
 - Microsoft

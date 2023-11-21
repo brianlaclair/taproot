@@ -1,5 +1,4 @@
 // build.js handles the process of importing data from /configuration into the page when loaded
-
 // Import Config File
 fetch('config.json')
     .then((response) => response.json())
