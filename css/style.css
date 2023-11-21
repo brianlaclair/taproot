@@ -1,10 +1,11 @@
 body {
-    background-color: #000000;
+    background-color: var(--main-bg-color);
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: #212529;
+    color: var(--main-text-color);
     text-align: left;
+    margin: 0;
     padding: 0;
     overflow-x: hidden;
     display: flex;
@@ -12,7 +13,7 @@ body {
 }
 
 #profileHead {
-    width: 100%;
+    margin-top: 25px;
 }
 
 .profileImage{
@@ -23,6 +24,16 @@ body {
     max-height: 200px;
     border-radius: 50%;
     object-fit: cover;
+    background-color: var(--main-image-bg-color);
+    box-shadow: 0px 0px 10px 0px var(--main-text-color);
+}
+
+.backgroundImageHolder{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    z-index: -1;
 }
 
 .backgroundImage{
@@ -31,6 +42,8 @@ body {
     object-fit: cover;
     position: absolute;
     z-index: -1;
+    -webkit-filter: blur(20px) grayscale(20%) brightness(50%); /* Safari 6.0 - 9.0 */
+    filter: blur(20px) grayscale(20%) brightness(50%);
 }
 
 #profileName{
@@ -53,20 +66,21 @@ body {
     width: 100vw;
     max-width: 890px;
     min-height: 70px;
-    color: #212529;
-    background-color: #fff;
+    background-color: var(--main-link-color);
+    color: var(--main-text-color);
     font-size: 20px;
     font-weight: bold;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 5px 0px 5px 0px;
     border-radius: 10px;
+    opacity: 0.8;
     transition-duration: 0.1s;
     transition-timing-function: ease-in;
 }
 
 .link:hover {
-    max-width: 900px;
-    min-height: 80px;
+    opacity: 1;
+    box-shadow: 0px 0px 10px 0px var(--main-link-hover-color);
+    background-color: var(--main-link-hover-color);
 }
 
 .linkText {
@@ -85,4 +99,34 @@ body {
     display:block;
     text-decoration: none;
     margin: 10px;
+}
+
+#socialLinks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    max-width: 890px;
+    margin: 10px 0px 10px 0px;
+
+}
+
+.socialImage {
+    width: 20px;
+    height: 20px;
+}
+
+.socialLink {
+    background: var(--main-text-color);
+    padding: 10px;
+    margin: 0px 10px 0px 10px;
+    border-radius: 10px;
+    filter: grayscale(100%);
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in;
+}
+
+.socialLink:hover {
+    filter: grayscale(0%);
+    transform: scale3d(1.1, 1.1, 1.1);
 }
