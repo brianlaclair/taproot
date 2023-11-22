@@ -59,14 +59,21 @@
                     <input type="text" id="edLinkedIn" name="linkedin" placeholder="linkedin URL">
                 </div>
             </details>
-            <div id="edLinks">
-                <div id="edLinkHolder">
+            <details open>
+                <summary>Links</summary>
+                <div id="edLinks">
+                    <div id="edLinkHolder">
+                    </div>
                 </div>
-            </div>
-            <div id="addLink">
-                <button id="addLinkButton" class="wide">Add Link</button>
-            </div>
+                <div id="addLink">
+                    <button id="addLinkButton" class="wide">Add Link</button>
+                </div>
+            </details>
+        <div id="save" class="horizontal">
+            <button id="saveButton" onclick="saveAsFile('config.json', config)" class="wide green">Save</button>
         </div>
+    </div>
+
         <div id="preview">
             <div id="profileHead" class="standardVertical">
                 <div id="profilePic">

@@ -96,3 +96,12 @@ input[type=checkbox] {
 .red {
     background-color: #ad0000;
 }
+
+.green {
+    color: #ffffff;
+    background-color: #3a6a3a;
+}
+
+#save {
+    margin-top: 25px;
+}

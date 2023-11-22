@@ -19,6 +19,7 @@ var editorColorQuinary      = document.getElementById("edColorQuinary");
 var editorFacebook      = document.getElementById("edFacebook");
 var editorTwitter       = document.getElementById("edTwitter");
 var editorInstagram     = document.getElementById("edInstagram");
+var editorTikTok        = document.getElementById("edTiktok");
 var editorTwitch        = document.getElementById("edTwitch");
 var editorYoutube       = document.getElementById("edYoutube");
 var editorGithub        = document.getElementById("edGithub");
@@ -42,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsDataURL(myFile); // Read the file as Data URL (Base64)
     });
 });
-
 
 editorTitle.addEventListener("change", function() {
     config.title = editorTitle.value;
@@ -94,6 +94,11 @@ editorFacebook.addEventListener("change", function() {
     init(config);
 });
 
+editorTikTok.addEventListener("change", function() {
+    config.social.tiktok = editorTikTok.value;
+    init(config);
+});
+
 editorTwitter.addEventListener("change", function() {
     config.social.twitter = editorTwitter.value;
     init(config);
@@ -132,9 +137,11 @@ var addLink = document.getElementById("addLink");
 var linkCount = 0;
 
 addLink.addEventListener("click", function() {
-    createLink();
-    // // Create a new link in the config
+    var uniqueId = Date.now() + generateRandomLetter(); // This is a unique ID for the link
+    createLink(uniqueId);
+    // Create a new link in the config
     config.links.push({
+        id: uniqueId,
         title: "",
         url: "",
         image: ""
@@ -142,31 +149,31 @@ addLink.addEventListener("click", function() {
     init(config);
 });
 
-function createLink() {
+function createLink(uniqueId) {
     var edLink = document.createElement("div");
-    edLink.setAttribute("id", "edLink" + linkCount);
+    edLink.setAttribute("id", "edLink" + uniqueId);
     edLink.setAttribute("class", "edLink");
 
     var edLinkTitle = document.createElement("input");
     edLinkTitle.setAttribute("type", "text");
-    edLinkTitle.setAttribute("id", "edLinkTitle" + linkCount);
+    edLinkTitle.setAttribute("id", "edLinkTitle" + uniqueId);
     edLinkTitle.setAttribute("name", "linkTitle");
     edLinkTitle.setAttribute("placeholder", "Link Title");
 
     var edLinkURL = document.createElement("input");
     edLinkURL.setAttribute("type", "text");
-    edLinkURL.setAttribute("id", "edLinkURL" + linkCount);
+    edLinkURL.setAttribute("id", "edLinkURL" + uniqueId);
     edLinkURL.setAttribute("name", "linkURL");
     edLinkURL.setAttribute("placeholder", "Link URL");
 
     var edLinkImage = document.createElement("input");
     edLinkImage.setAttribute("type", "file");
-    edLinkImage.setAttribute("id", "edLinkImage" + linkCount);
+    edLinkImage.setAttribute("id", "edLinkImage" + uniqueId);
     edLinkImage.setAttribute("name", "linkImage");
     edLinkImage.setAttribute("accept", "image/*");
 
     var edLinkRemove = document.createElement("button");
-    edLinkRemove.setAttribute("id", "removeLink" + linkCount);
+    edLinkRemove.setAttribute("id", "removeLink" + uniqueId);
     edLinkRemove.setAttribute("class", "red");
     edLinkRemove.innerHTML = "X";
 
@@ -175,8 +182,6 @@ function createLink() {
     edLink.appendChild(edLinkImage);
     edLink.appendChild(edLinkRemove);
     edLinkHolder.appendChild(edLink);
-
-    linkCount++;
 }
 
 // Remove a link
@@ -187,7 +192,7 @@ edLinkHolder.addEventListener("click", function(event) {
         linkElement.parentNode.removeChild(linkElement);
 
         // Remove the link from the config
-        config.links.splice(linkToRemove, 1);
+        config.links.splice(findLink(linkToRemove), 1);
         init(config);
     }
 });
@@ -197,29 +202,67 @@ function fillLinks() {
     var links = config.links;
 
     for (var i = 0; i < links.length; i++) {
-        createLink();
-        document.getElementById("edLinkTitle" + i).value = links[i].title;
-        document.getElementById("edLinkURL" + i).value = links[i].url;
+        createLink(links[i].id);
+        console.log(links[i].id);
+        document.getElementById("edLinkTitle" + links[i].id).value = links[i].title;
+        document.getElementById("edLinkURL" + links[i].id).value = links[i].url;
+    }
+}
+
+function findLink(id) {
+    var links = config.links;
+
+    for (var i = 0; i < links.length; i++) {
+        if (links[i].id == id) {
+            return i;
+        }
     }
 }
 
 // Allow changes in the link editor to update the config
 edLinkHolder.addEventListener("change", function(event) {
     var linkToUpdate = event.target.id.replace("edLink", "");
-
     var linkUpdate = document.getElementById("edLink" + linkToUpdate).value;
 
     // Get the name of the input that was changed
-    var key = linkToUpdate.replace(/[^a-zA-Z]/g, "").toLowerCase();
-
-    // Get just the number from linkToUpdate
-    linkToUpdate = linkToUpdate.replace(/[^0-9]/g, "");
+    var key = linkToUpdate.replace(/[^a-zA-Z]/g, "").toLowerCase().slice(0, -1);;
 
     // Just update the affected key
-    config.links[linkToUpdate][key] = linkUpdate;
+    var linkIndex = findLink(linkToUpdate.slice(-14));
+
+    // if the key is image, we need to handle it differently
+    if (key == "image") {
+        var myFile = event.target.files[0]; // Get the file
+        var reader = new FileReader();
+
+        reader.addEventListener('load', function (e) {
+            var fileContent = e.target.result;
+            // Set config.image to the base64 string
+            config.links[linkIndex][key] = fileContent;
+            init(config);
+        });
+
+        reader.readAsDataURL(myFile); // Read the file as Data URL (Base64)
+    }
+
+    config.links[linkIndex][key] = linkUpdate;
 
     init(config);
 });
+
+// When the saveButton is clicked, export the config as config.json
+function saveAsFile(filename, data) {
+    const blob = new Blob([JSON.stringify(data)]);
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = window.URL.createObjectURL(blob);
+    link.click()
+};
+
+function generateRandomLetter() {
+    const alphabet = "abcdefghijklmnopqrstuvwxyz"
+    return alphabet[Math.floor(Math.random() * alphabet.length)]
+}
 
 function fillEditor() {
     editorBackground.checked    = config.style.displayBackground;
@@ -236,6 +279,7 @@ function fillEditor() {
     editorFacebook.value        = config.social.facebook;
     editorTwitter.value         = config.social.twitter;
     editorInstagram.value       = config.social.instagram;
+    editorTikTok.value          = config.social.tiktok;
     editorTwitch.value          = config.social.twitch;
     editorYoutube.value         = config.social.youtube;
     editorGithub.value          = config.social.github;
