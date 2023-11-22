@@ -31,11 +31,13 @@ don't see something you're excited for in this list? open a [new enhancement req
 
 ## ways to contribute
 1. **development**
+
 if you are a developer, there's plenty to do around here! take a look at the future features section above and feel encouraged to create a pull request
 
 2. **spreading the word**
+
 talk to your friends (online, in real life, and fictional) about taproot!
 
-3. **donate** 
+3. **donate**
+
 not a very fun fact,  but money being donated to this project means more of my time can be spent on it! 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G0AGYJ3)
