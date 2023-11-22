@@ -35,9 +35,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         reader.addEventListener('load', function (e) {
             var fileContent = e.target.result;
-            // Set config.image to the base64 string
-            config.image = fileContent;
-            init(config);
+
+            // convert to webp
+            convertDataURL(fileContent, function (fileContent) {
+                config.image = fileContent;
+                init(config);
+            });
         });
 
         reader.readAsDataURL(myFile); // Read the file as Data URL (Base64)
@@ -169,6 +172,7 @@ function createLink(uniqueId) {
     var edLinkImage = document.createElement("input");
     edLinkImage.setAttribute("type", "file");
     edLinkImage.setAttribute("id", "edLinkImage" + uniqueId);
+    edLinkImage.setAttribute("class", "edLinkImage");
     edLinkImage.setAttribute("name", "linkImage");
     edLinkImage.setAttribute("accept", "image/*");
 
@@ -225,7 +229,7 @@ edLinkHolder.addEventListener("change", function(event) {
     var linkUpdate = document.getElementById("edLink" + linkToUpdate).value;
 
     // Get the name of the input that was changed
-    var key = linkToUpdate.replace(/[^a-zA-Z]/g, "").toLowerCase().slice(0, -1);;
+    var key = linkToUpdate.replace(/[^a-zA-Z]/g, "").toLowerCase().slice(0, -1);
 
     // Just update the affected key
     var linkIndex = findLink(linkToUpdate.slice(-14));
@@ -234,20 +238,23 @@ edLinkHolder.addEventListener("change", function(event) {
     if (key == "image") {
         var myFile = event.target.files[0]; // Get the file
         var reader = new FileReader();
-
+        
         reader.addEventListener('load', function (e) {
             var fileContent = e.target.result;
-            // Set config.image to the base64 string
-            config.links[linkIndex][key] = fileContent;
-            init(config);
+
+            // Resize the image and once it's done set the config
+            resizedataURL(fileContent, 80, function (fileContent) {
+                console.log("Event has fired");
+                config.links[linkIndex][key] = fileContent;
+                init(config);
+            });
         });
 
         reader.readAsDataURL(myFile); // Read the file as Data URL (Base64)
+    } else {
+        config.links[linkIndex][key] = linkUpdate;
+        init(config);
     }
-
-    config.links[linkIndex][key] = linkUpdate;
-
-    init(config);
 });
 
 // When the saveButton is clicked, export the config as config.json
@@ -286,4 +293,60 @@ function fillEditor() {
     editorLinkedIn.value        = config.social.linkedin;
 
     fillLinks();
+}
+
+// original resizeddataURL Credit: Pierrick Martellière - https://stackoverflow.com/a/26884245
+function resizedataURL(datas, wantedMaxDimension, callback) {
+        // We create an image to receive the Data URI
+        var img = document.createElement('img');
+
+        // Get original width and height of image
+        img.src = datas;
+
+        // When the event "onload" is triggered we can resize the image.
+        img.onload = function() {
+
+            // Keep original ratio
+            var originalWidth = img.width;
+            var originalHeight = img.height;
+            var ratio = originalWidth / originalHeight;
+            if (originalWidth > originalHeight) {
+                var newWidth = wantedMaxDimension;
+                var newHeight = wantedMaxDimension / ratio;
+            } else {
+                var newWidth = wantedMaxDimension * ratio;
+                var newHeight = wantedMaxDimension;
+            } 
+
+            // We create a canvas and get its context.
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+
+            // We set the dimensions at the wanted size.
+            canvas.width     = newWidth;
+            canvas.height    = newHeight;
+
+            // We resize the image with the canvas method drawImage();
+            ctx.drawImage(this, 0, 0, newWidth, newHeight);
+
+            var dataURI = canvas.toDataURL('image/webp');
+
+            // This is the return of the Function
+            callback(dataURI);
+        };
+}
+
+// convert a dataURL to webp
+function convertDataURL(dataURL, callback) {
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+    var image = new Image();
+    image.src = dataURL;
+    image.onload = function () {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        ctx.drawImage(image, 0, 0);
+        var newURL = canvas.toDataURL("image/webp");
+        callback(newURL);
+    };
 }

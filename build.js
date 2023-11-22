@@ -146,17 +146,19 @@ function checkImage(image) {
         "[a-zA-Z]{2,63}\\/?"+ // TLD
         "(?:[\\w\\-\\.~:/?#\\[\\]@!$&'\\(\\)\\*\\+,;=]+)?$"); // port, path, query_string & anchor
 
-    if (urlRegex.test(image)) {
-        // URL is valid, but we need to check that it's not local (i.e. it's not a filename)
-        if (image.includes("http")) {
-            return image;
-        } else {
-            return mediaDir + image;
+    if (image !== undefined && image !== null) {
+        if (urlRegex.test(image)) {
+            // URL is valid, but we need to check that it's not local (i.e. it's not a filename)
+            if (image.includes("http")) {
+                return image;
+            } else {
+                return mediaDir + image;
+            }
         }
-    }
 
-    if (image.includes("data:image")) {
-        return image;
+        if (image.includes("data:image")) {
+            return image;
+        }
     }
 
     return false;

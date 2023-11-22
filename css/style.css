@@ -26,6 +26,7 @@ body {
     object-fit: cover;
     background-color: var(--main-image-bg-color);
     box-shadow: 0px 0px 10px 0px var(--main-text-color);
+    transition-duration: 0.3s;
 }
 
 .backgroundImageHolder{
@@ -134,3 +135,4 @@ body {
     filter: grayscale(0%);
     transform: scale(1.5);
 }
+
