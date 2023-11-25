@@ -46,20 +46,11 @@ function init(json) {
         document.documentElement.style.setProperty("--" + styleKeys[i].replaceAll("_", "-"), style[styleKeys[i]]);
     }
 
-    // For each item in the socials object, create a social link, where the image is the social icon from /branding
+    // For each item in the socials array, create a social link and attempt to fetch the icon from the SimpleIcons CDN
     var socials = json.social;
-    var socialKeys = Object.keys(socials);
-    for (var i = 0; i < socialKeys.length; i++) {
+    socials.forEach(function (social) {
 
-        var brandingDir = "branding/";
-
-        // Setting for Builder
-        if (!autoload) {
-            brandingDir = "../" + brandingDir;
-        }
-
-        var link = checkSocials(socials[socialKeys[i]]);
-
+        var link = checkSocials(social);
         if (link !== null) {
             var social = document.createElement("a");
             social.setAttribute("class", "socialLink");
@@ -68,12 +59,12 @@ function init(json) {
 
             var socialImage = document.createElement("img");
             socialImage.setAttribute("class", "socialImage");
-            socialImage.setAttribute("src", brandingDir + socialKeys[i].toLowerCase() + ".png");
+            socialImage.setAttribute("src", json.iconsCDN + getRootDomain(link));
 
             social.appendChild(socialImage);
             document.getElementById("socialLinks").appendChild(social);
         }
-    }
+    });
 
     links(json.links);
 }
@@ -162,4 +153,10 @@ function checkImage(image) {
     }
 
     return false;
+}
+
+function getRootDomain(url) {
+    url = url.replace(/-/g, "");
+    var domain = (new URL(url)).hostname.split('.').slice(-2)[0];
+    return domain.toLowerCase();
 }

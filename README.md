@@ -25,13 +25,13 @@ the easiest way to start using taproot is by:
 -- in-line editing
 -- mobile support
 - more control of default style
-- additional default social media link options
--- take advantage of open source SVG icons
--- programmatic adding in builder
 - per-link styling
 - additional types of links
 
 don't see something you're excited for in this list? open a [new enhancement request](https://github.com/brianlaclair/taproot/issues/new)!
+
+## credits
+brand icons by [Simple Icons](https://github.com/simple-icons/simple-icons)
 
 ## ways to contribute
 1. **development**

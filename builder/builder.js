@@ -13,22 +13,8 @@ var editorColorTertiary     = document.getElementById("edColorTertiary");
 var editorColorQuaternary   = document.getElementById("edColorQuaternary");
 var editorColorQuinary      = document.getElementById("edColorQuinary");
 
-function socialLinksInit(config) {
-    Object.keys(config.social).forEach(key => {
-        var edSocial = document.createElement("input");
-        edSocial.setAttribute("type", "text");
-        edSocial.setAttribute("id", "ed" + key);
-        edSocial.setAttribute("name", key);
-        edSocial.setAttribute("placeholder", key + " URL");
-        edSocial.value = config.social[key];
-        edSocial.addEventListener("change", function() {
-            config.social[key] = edSocial.value;
-            init(config);
-        });
-
-        document.getElementById("socialMediaList").appendChild(edSocial);
-    });
-}
+// Social box
+var edSocialBox = document.getElementById("edSocials");
 
 // File uploader for JUST the main image (not links) - this was very early on and needs love
 document.addEventListener('DOMContentLoaded', function () {
@@ -265,8 +251,38 @@ function fillEditor() {
     editorColorQuaternary.value = config.style.main_link_color;
     editorColorQuinary.value    = config.style.main_link_hover_color;
 
+    edSocialBox.value           = returnSocials(config.social);
+
+
+
     fillLinks();
 }
+
+// Return the content of json.social array as a string, separated by commas
+function returnSocials(json) {
+    var socialsString = json.join("\n");
+
+    return socialsString;
+}
+
+function compileSocials() {
+    var socials = edSocialBox.value.split("\n");
+    var socialsArray = [];
+    
+    for (var i = 0; i < socials.length; i++) {
+        if (socials[i] !== "") {
+            socialsArray.push(socials[i]);
+        }
+    }
+
+    return socialsArray;
+}
+
+// on change of the socials box, update the config
+edSocialBox.addEventListener("change", function() {
+    config.social = compileSocials();
+    init(config);
+});
 
 // original resizeddataURL Credit: Pierrick Martellière - https://stackoverflow.com/a/26884245
 function resizedataURL(datas, wantedMaxDimension, callback) {
@@ -371,4 +387,3 @@ function imageUpload(ev) {
   
     el.click(); // open
   }
-  

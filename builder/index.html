@@ -15,7 +15,6 @@
                 .then((json) => {
                     config = json;
                     init(config);
-                    socialLinksInit(config);
                     fillEditor(config);
                 });
         </script>
@@ -51,6 +50,8 @@
             <details>
                 <summary>Socials</summary>
                 <div id="socialMediaList">
+                    <textarea id="edSocials" class="inputClass" name="socialsList" placeholder="List of Social Media URL's, separated by commas">
+                    </textarea>
                 </div>
             </details>
             <details open>
