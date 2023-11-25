@@ -1,7 +1,5 @@
 // I know, I know - this is truly disgusting. I'm sorry.
 // If no one else wants to tackle this in a programatic way, I'll eventually return - BL
-
-// on change for the title, update config.title and rerun init
 var editorImage         = document.getElementById("edImage");
 var editorBackground    = document.getElementById("edBackgroundImage");
 var editorTitle         = document.getElementById("edTitle");
@@ -15,17 +13,24 @@ var editorColorTertiary     = document.getElementById("edColorTertiary");
 var editorColorQuaternary   = document.getElementById("edColorQuaternary");
 var editorColorQuinary      = document.getElementById("edColorQuinary");
 
-// Socials
-var editorFacebook      = document.getElementById("edFacebook");
-var editorTwitter       = document.getElementById("edTwitter");
-var editorInstagram     = document.getElementById("edInstagram");
-var editorTikTok        = document.getElementById("edTiktok");
-var editorTwitch        = document.getElementById("edTwitch");
-var editorYoutube       = document.getElementById("edYoutube");
-var editorGithub        = document.getElementById("edGithub");
-var editorLinkedIn      = document.getElementById("edLinkedIn");
+function socialLinksInit(config) {
+    Object.keys(config.social).forEach(key => {
+        var edSocial = document.createElement("input");
+        edSocial.setAttribute("type", "text");
+        edSocial.setAttribute("id", "ed" + key);
+        edSocial.setAttribute("name", key);
+        edSocial.setAttribute("placeholder", key + " URL");
+        edSocial.value = config.social[key];
+        edSocial.addEventListener("change", function() {
+            config.social[key] = edSocial.value;
+            init(config);
+        });
 
+        document.getElementById("socialMediaList").appendChild(edSocial);
+    });
+}
 
+// File uploader for JUST the main image (not links) - this was very early on and needs love
 document.addEventListener('DOMContentLoaded', function () {
     var fileInput = editorImage;
 
@@ -92,52 +97,10 @@ editorColorQuinary.addEventListener("change", function() {
     init(config);
 });
 
-editorFacebook.addEventListener("change", function() {
-    config.social.facebook = editorFacebook.value;
-    init(config);
-});
-
-editorTikTok.addEventListener("change", function() {
-    config.social.tiktok = editorTikTok.value;
-    init(config);
-});
-
-editorTwitter.addEventListener("change", function() {
-    config.social.twitter = editorTwitter.value;
-    init(config);
-});
-
-editorInstagram.addEventListener("change", function() {
-    config.social.instagram = editorInstagram.value;
-    init(config);
-});
-
-editorTwitch.addEventListener("change", function() {
-    config.social.twitch = editorTwitch.value;
-    init(config);
-}); 
-
-editorYoutube.addEventListener("change", function() {
-    config.social.youtube = editorYoutube.value;
-    init(config);
-});
-
-editorGithub.addEventListener("change", function() {
-    config.social.github = editorGithub.value;
-    init(config);
-});
-
-editorLinkedIn.addEventListener("change", function() {
-    config.social.linkedin = editorLinkedIn.value;
-    init(config);
-});
-
-
 // Links
 // Add a new link
 var edLinkHolder = document.getElementById("edLinkHolder");
 var addLink = document.getElementById("addLink");
-var linkCount = 0;
 
 addLink.addEventListener("click", function() {
     var uniqueId = Date.now() + generateRandomLetter(); // This is a unique ID for the link
@@ -169,37 +132,76 @@ function createLink(uniqueId) {
     edLinkURL.setAttribute("name", "linkURL");
     edLinkURL.setAttribute("placeholder", "Link URL");
 
-    var edLinkImage = document.createElement("input");
-    edLinkImage.setAttribute("type", "file");
-    edLinkImage.setAttribute("id", "edLinkImage" + uniqueId);
-    edLinkImage.setAttribute("class", "edLinkImage");
-    edLinkImage.setAttribute("name", "linkImage");
-    edLinkImage.setAttribute("accept", "image/*");
+    // Create a div to hold add image, move link up, move link down, remove link
+    var edLinkControls = document.createElement("div");
+    edLinkControls.setAttribute("id", "edLinkControls" + uniqueId);
+    edLinkControls.setAttribute("class", "edLinkControls");
 
+    // Move link up button
+    var edLinkUp = document.createElement("button");
+    edLinkUp.onclick = function() { moveLinkUp(uniqueId); };
+    edLinkUp.innerHTML = "Up";
+    edLinkControls.appendChild(edLinkUp);
+    
+    // Move link down button
+    var edLinkDown = document.createElement("button");
+    edLinkDown.onclick = function() { moveLinkDown(uniqueId); };
+    edLinkDown.innerHTML = "Down";
+    edLinkControls.appendChild(edLinkDown);
+
+    // Image button
+    var edLinkImageAdd = document.createElement("button");
+    edLinkImageAdd.setAttribute("id", "addLinkImage" + uniqueId);
+    edLinkImageAdd.onclick = function() { imageUpload(uniqueId); };
+    edLinkImageAdd.innerHTML = "Change Image";
+    edLinkControls.appendChild(edLinkImageAdd);
+
+    // Remove link button
     var edLinkRemove = document.createElement("button");
     edLinkRemove.setAttribute("id", "removeLink" + uniqueId);
-    edLinkRemove.setAttribute("class", "red");
+    edLinkRemove.onclick = function() { removeLink(uniqueId); };
     edLinkRemove.innerHTML = "X";
+    edLinkControls.appendChild(edLinkRemove);
 
     edLink.appendChild(edLinkTitle);
     edLink.appendChild(edLinkURL);
-    edLink.appendChild(edLinkImage);
-    edLink.appendChild(edLinkRemove);
+    edLink.appendChild(edLinkControls);
     edLinkHolder.appendChild(edLink);
 }
 
 // Remove a link
-edLinkHolder.addEventListener("click", function(event) {
-    if (event.target && event.target.nodeName == "BUTTON") {
-        var linkToRemove = event.target.id.replace("removeLink", "");
-        var linkElement = document.getElementById("edLink" + linkToRemove);
-        linkElement.parentNode.removeChild(linkElement);
+function removeLink(linkToRemove) {
+    var linkElement = document.getElementById("edLink" + linkToRemove);
+    linkElement.parentNode.removeChild(linkElement);
+    
+    // Remove the link from the config
+    config.links.splice(findLink(linkToRemove), 1);
+    init(config);
+}
 
-        // Remove the link from the config
-        config.links.splice(findLink(linkToRemove), 1);
-        init(config);
-    }
-});
+function moveLinkUp(linkToMove) {
+    var linkIndex = findLink(linkToMove.slice(-14));
+    var link = config.links[linkIndex];
+    config.links.splice(linkIndex, 1);
+    config.links.splice(linkIndex - 1, 0, link);
+    init(config);
+
+    // remove the builder links and recreate them
+    edLinkHolder.innerHTML = "";
+    fillLinks();
+}
+
+function moveLinkDown(linkToMove) {
+    var linkIndex = findLink(linkToMove.slice(-14));
+    var link = config.links[linkIndex];
+    config.links.splice(linkIndex, 1);
+    config.links.splice(linkIndex + 1, 0, link);
+    init(config);
+    
+    // remove the builder links and recreate them
+    edLinkHolder.innerHTML = "";
+    fillLinks();
+}
 
 // Create link entries for existing links in the config
 function fillLinks() {
@@ -207,7 +209,6 @@ function fillLinks() {
 
     for (var i = 0; i < links.length; i++) {
         createLink(links[i].id);
-        console.log(links[i].id);
         document.getElementById("edLinkTitle" + links[i].id).value = links[i].title;
         document.getElementById("edLinkURL" + links[i].id).value = links[i].url;
     }
@@ -234,27 +235,8 @@ edLinkHolder.addEventListener("change", function(event) {
     // Just update the affected key
     var linkIndex = findLink(linkToUpdate.slice(-14));
 
-    // if the key is image, we need to handle it differently
-    if (key == "image") {
-        var myFile = event.target.files[0]; // Get the file
-        var reader = new FileReader();
-        
-        reader.addEventListener('load', function (e) {
-            var fileContent = e.target.result;
-
-            // Resize the image and once it's done set the config
-            resizedataURL(fileContent, 80, function (fileContent) {
-                console.log("Event has fired");
-                config.links[linkIndex][key] = fileContent;
-                init(config);
-            });
-        });
-
-        reader.readAsDataURL(myFile); // Read the file as Data URL (Base64)
-    } else {
-        config.links[linkIndex][key] = linkUpdate;
-        init(config);
-    }
+    config.links[linkIndex][key] = linkUpdate;
+    init(config);
 });
 
 // When the saveButton is clicked, export the config as config.json
@@ -282,15 +264,6 @@ function fillEditor() {
     editorColorTertiary.value   = config.style.main_text_color;
     editorColorQuaternary.value = config.style.main_link_color;
     editorColorQuinary.value    = config.style.main_link_hover_color;
-
-    editorFacebook.value        = config.social.facebook;
-    editorTwitter.value         = config.social.twitter;
-    editorInstagram.value       = config.social.instagram;
-    editorTikTok.value          = config.social.tiktok;
-    editorTwitch.value          = config.social.twitch;
-    editorYoutube.value         = config.social.youtube;
-    editorGithub.value          = config.social.github;
-    editorLinkedIn.value        = config.social.linkedin;
 
     fillLinks();
 }
@@ -350,3 +323,52 @@ function convertDataURL(dataURL, callback) {
         callback(newURL);
     };
 }
+
+// Credit: BananaAcid - https://stackoverflow.com/a/56607553
+function imageUpload(ev) {
+    console.log(ev);
+    var el = window._protected_reference = document.createElement("INPUT");
+    el.type = "file";
+    el.accept = "image/*";
+    
+    // (cancel will not trigger 'change')
+    el.addEventListener('change', function(ev2) {
+      // access el.files[] to do something with it (test its length!)
+      
+    var linkId = ev;
+    var linkIndex = findLink(linkId);
+
+      // add first image, if available
+      if (el.files.length) {
+        var myFile = el.files[0];
+        var reader = new FileReader();
+        
+        reader.addEventListener('load', function (e) {
+            var fileContent = e.target.result;
+
+            // Resize the image and once it's done set the config
+            resizedataURL(fileContent, 80, function (fileContent) {
+                console.log("Event has fired");
+                config.links[linkIndex]["image"] = fileContent;
+                init(config);
+            });
+        });
+
+        reader.readAsDataURL(myFile); // Read the file as Data URL (Base64)
+
+      }
+
+      // test some async handling
+      new Promise(function(resolve) {
+        setTimeout(function() { console.log(el.files); resolve(); }, 1000);
+      })
+      .then(function() {
+        // clear / free reference
+        el = window._protected_reference = undefined;
+      });
+  
+    });
+  
+    el.click(); // open
+  }
+  

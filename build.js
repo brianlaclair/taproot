@@ -68,7 +68,7 @@ function init(json) {
 
             var socialImage = document.createElement("img");
             socialImage.setAttribute("class", "socialImage");
-            socialImage.setAttribute("src", brandingDir + socialKeys[i] + ".png");
+            socialImage.setAttribute("src", brandingDir + socialKeys[i].toLowerCase() + ".png");
 
             social.appendChild(socialImage);
             document.getElementById("socialLinks").appendChild(social);

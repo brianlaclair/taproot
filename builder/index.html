@@ -15,6 +15,7 @@
                 .then((json) => {
                     config = json;
                     init(config);
+                    socialLinksInit(config);
                     fillEditor(config);
                 });
         </script>
@@ -49,15 +50,7 @@
             </details>
             <details>
                 <summary>Socials</summary>
-                <div>
-                    <input type="text" id="edFacebook" name="facebook" placeholder="facebook URL">
-                    <input type="text" id="edTwitter" name="twitter" placeholder="twitter URL">
-                    <input type="text" id="edInstagram" name="instagram" placeholder="instagram URL">
-                    <input type="text" id="edTiktok" name="tiktok" placeholder="tiktok URL">
-                    <input type="text" id="edYoutube" name="youtube" placeholder="youtube URL">
-                    <input type="text" id="edTwitch" name="twitch" placeholder="twitch URL">
-                    <input type="text" id="edGithub" name="github" placeholder="github URL">
-                    <input type="text" id="edLinkedIn" name="linkedin" placeholder="linkedin URL">
+                <div id="socialMediaList">
                 </div>
             </details>
             <details open>
