@@ -21,10 +21,8 @@ the easiest way to start using taproot is by:
 
 ## future features
 - options for analytics (integrating with existing analytics solutions, as well as free options)
-- upgraded builder tool 
--- in-line editing
--- mobile support
-- more control of default style
+- upgraded builder tool (in-line editing, mobile support)
+- more control over default style
 - per-link styling
 - additional types of links
 
@@ -41,5 +39,4 @@ if you are a developer, there's plenty to do around here! take a look at the fut
 talk to your friends (online, in real life, and fictional) about taproot!
 
 3. **donate** 
-not a very fun fact,  but money being donated to this project means more of my time can be spent on it! 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/G2G0AGYJ3)
+not a very fun fact,  but money being donated to this project means more of my time can be spent on it!
